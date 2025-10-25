@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="OrbanaDrive.Views.HomePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Shell.NavBarIsVisible="False"
+    BackgroundColor="{StaticResource PageBackgroundColor}">
+
+    <!-- ====== Estilos locales ====== -->
+    <ContentPage.Resources>
+        <Style TargetType="Label" x:Key="H1">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontAttributes" Value="Bold"/>
+            <Setter Property="TextColor" Value="{StaticResource ClrTextPrimary}"/>
+        </Style>
+
+        <Style TargetType="Label" x:Key="Muted">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="TextColor" Value="{StaticResource ClrTextSecondary}"/>
+        </Style>
+
+        <Style TargetType="Border" x:Key="TileButton">
+            <Setter Property="Background" Value="#1E1E1E"/>
+            <Setter Property="Stroke" Value="#303030"/>
+            <Setter Property="StrokeThickness" Value="1"/>
+            <Setter Property="StrokeShape">
+                <Setter.Value>
+                    <RoundRectangle CornerRadius="16"/>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="WidthRequest" Value="156"/>
+            <Setter Property="HeightRequest" Value="132"/>
+            <Setter Property="Padding" Value="12"/>
+        </Style>
+    </ContentPage.Resources>
+
+    <!-- ====== Layout raíz ====== -->
+    <Grid RowDefinitions="Auto,Auto,*,Auto" Padding="16" RowSpacing="12">
+
+        <!-- Header -->
+        <Grid ColumnDefinitions="*,Auto" Padding="4,8,4,0">
+            <Label Text="Inicio" Style="{StaticResource H1}"/>
+            <Button Grid.Column="1"
+                    Clicked="OnMenuClicked"
+                    Text="☰"
+                    BackgroundColor="Transparent"
+                    TextColor="{StaticResource ClrTextPrimary}"/>
+        </Grid>
+
+        <!-- Estado (avatar + 2 líneas compactas) -->
+        <Border Grid.Row="1"
+                Background="#151515" Stroke="#2A2A2A" StrokeThickness="1"
+                StrokeShape="RoundRectangle 16" Padding="12">
+            <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,Auto" ColumnSpacing="12">
+                <!-- Avatar -->
+                <Border Grid.RowSpan="2" WidthRequest="44" HeightRequest="44"
+                        BackgroundColor="#333"
+                        StrokeThickness="0">
+                    <Image WidthRequest="44" HeightRequest="44" Aspect="AspectFill"
+                           Clip="M44,22 A22,22 0 1 1 0,22 A22,22 0 1 1 44,22 Z">
+                        <Image.Source>
+                            <UriImageSource Uri="{Binding AvatarUrl}" CachingEnabled="True" CacheValidity="01:00:00"/>
+                        </Image.Source>
+                        <Image.Triggers>
+                            <DataTrigger TargetType="Image" Binding="{Binding AvatarUrl}" Value="{x:Null}">
+                                <Setter Property="Source" Value="avatar_placeholder.png"/>
+                            </DataTrigger>
+                        </Image.Triggers>
+                    </Image>
+                </Border>
+
+                <!-- Izquierda arriba -->
+                <Label Grid.Column="1" Grid.Row="0"
+                       Text="{Binding DriverStatus, StringFormat='Turno: {0}'}"
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource ClrTextPrimary}"/>
+
+                <!-- Derecha arriba (vehículo) -->
+                <Label Grid.Column="2" Grid.Row="0"
+                       Text="{Binding VehicleInfo}"
+                       HorizontalTextAlignment="End"
+                       Style="{StaticResource Muted}"/>
+
+                <!-- Abajo izquierda (turno # y fecha corta) -->
+                <Label Grid.Column="1" Grid.Row="1"
+                       Text="{Binding ShiftLine1}"
+                       Style="{StaticResource Muted}"/>
+
+                <!-- Abajo derecha (eco/placa resumido) -->
+                <Label Grid.Column="2" Grid.Row="1"
+                       Text="{Binding ShiftLine2}"
+                       HorizontalTextAlignment="End"
+                       Style="{StaticResource Muted}"/>
+            </Grid>
+        </Border>
+
+        <!-- ====== Acciones: 2x2 botones grandes centrados ====== -->
+        <Grid Grid.Row="2"
+              HorizontalOptions="Center"
+              VerticalOptions="Center"
+              ColumnSpacing="16" RowSpacing="16"
+              ColumnDefinitions="Auto,Auto"
+              RowDefinitions="Auto,Auto">
+
+            <!-- OFERTAS -->
+            <Border Grid.Row="0" Grid.Column="0" Style="{StaticResource TileButton}">
+                <Grid>
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnOffersTapped"/>
+                    </Grid.GestureRecognizers>
+                    <VerticalStackLayout Spacing="8" HorizontalOptions="Center" VerticalOptions="Center">
+                        <Image Source="offers_icon.png" WidthRequest="36" HeightRequest="36" Aspect="AspectFit"/>
+                        <Label Text="Ofertas" FontSize="16" TextColor="{StaticResource ClrTextPrimary}"/>
+                        <Label Text="Ver disponibles" Style="{StaticResource Muted}"/>
+                    </VerticalStackLayout>
+                </Grid>
+            </Border>
+
+            <!-- SERVICIO -->
+            <Border Grid.Row="0" Grid.Column="1" Style="{StaticResource TileButton}">
+                <Grid>
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnRideTapped"/>
+                    </Grid.GestureRecognizers>
+                    <VerticalStackLayout Spacing="8" HorizontalOptions="Center" VerticalOptions="Center">
+                        <Image Source="ride_icon.png" WidthRequest="36" HeightRequest="36" Aspect="AspectFit"/>
+                        <Label Text="Servicio" FontSize="16" TextColor="{StaticResource ClrTextPrimary}"/>
+                        <Label Text="Ir al servicio" Style="{StaticResource Muted}"/>
+                    </VerticalStackLayout>
+                </Grid>
+            </Border>
+
+            <!-- BASES -->
+            <Border Grid.Row="1" Grid.Column="0" Style="{StaticResource TileButton}">
+                <Grid>
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnStandsTapped"/>
+                    </Grid.GestureRecognizers>
+                    <VerticalStackLayout Spacing="8" HorizontalOptions="Center" VerticalOptions="Center">
+                        <Image Source="stands_icon.png" WidthRequest="32" HeightRequest="32" Aspect="AspectFit"/>
+                        <Label Text="Bases" FontSize="16" TextColor="{StaticResource ClrTextPrimary}"/>
+                        <Label Text="Zonas / sitios" Style="{StaticResource Muted}"/>
+                    </VerticalStackLayout>
+                </Grid>
+            </Border>
+
+            <!-- AJUSTES -->
+            <Border Grid.Row="1" Grid.Column="1" Style="{StaticResource TileButton}">
+                <Grid>
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnSettingsTapped"/>
+                    </Grid.GestureRecognizers>
+                    <VerticalStackLayout Spacing="8" HorizontalOptions="Center" VerticalOptions="Center">
+                        <Image Source="settings_icon.png" WidthRequest="32" HeightRequest="32" Aspect="AspectFit"/>
+                        <Label Text="Ajustes" FontSize="16" TextColor="{StaticResource ClrTextPrimary}"/>
+                        <Label Text="Preferencias" Style="{StaticResource Muted}"/>
+                    </VerticalStackLayout>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- Footer -->
+        <Label Grid.Row="3" Text="Orbana Driver App"
+               FontSize="12" HorizontalTextAlignment="Center"
+               TextColor="{StaticResource ClrTextSecondary}" Opacity="0.6"/>
+    </Grid>
+</ContentPage>

@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="OrbanaDrive.Views.OffersPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    BackgroundColor="{StaticResource PageBackgroundColor}"
+    Shell.NavBarIsVisible="True"
+    Title="">
+
+    <ContentPage.Resources>
+        <!-- Styles -->
+        <Style TargetType="Button" x:Key="StateBtn">
+            <Setter Property="Padding" Value="14,10"/>
+            <Setter Property="CornerRadius" Value="14"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="BackgroundColor" Value="#1E1E1E"/>
+            <Setter Property="TextColor" Value="{StaticResource ClrTextPrimary}"/>
+            <Setter Property="BorderColor" Value="#343434"/>
+            <Setter Property="BorderWidth" Value="1"/>
+        </Style>
+
+        <Style TargetType="Label" x:Key="Muted">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="TextColor" Value="{StaticResource ClrTextSecondary}"/>
+            <Setter Property="Opacity" Value="0.9"/>
+        </Style>
+
+        <Style TargetType="Frame" x:Key="Card">
+            <Setter Property="CornerRadius" Value="16"/>
+            <Setter Property="HasShadow" Value="False"/>
+            <Setter Property="Padding" Value="14"/>
+            <Setter Property="BackgroundColor" Value="#1A1A1A"/>
+            <Setter Property="BorderColor" Value="#2D2D2D"/>
+        </Style>
+
+        <Style TargetType="Button" x:Key="PrimarySmall">
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="BackgroundColor" Value="#2F6FED"/>
+            <Setter Property="TextColor" Value="White"/>
+        </Style>
+        <Style TargetType="Button" x:Key="DangerSmall" BasedOn="{StaticResource PrimarySmall}">
+            <Setter Property="BackgroundColor" Value="#D35454"/>
+        </Style>
+
+        <!-- Chip colors -->
+        <SolidColorBrush x:Key="AvailBgOn"  Color="#113923"/>
+        <SolidColorBrush x:Key="AvailBgOff" Color="#3A1A1A"/>
+        <Color x:Key="AvailStrokeOn">#2ECC71</Color>
+        <Color x:Key="AvailStrokeOff">#E67E80</Color>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto,Auto,*" Padding="16" RowSpacing="14">
+
+        <!-- ====== HEADER (título pequeño + badge + logo) ====== -->
+        <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" VerticalOptions="Center" ColumnSpacing="10">
+            <Label Text="Ofertas" FontSize="16" FontAttributes="Bold"
+                   TextColor="{StaticResource ClrTextPrimary}" VerticalOptions="Center"/>
+
+            <!-- Badge disponibilidad (verde/rojo) -->
+            <Border Grid.Column="1" HorizontalOptions="End"
+                    Padding="10,6" StrokeThickness="1" StrokeShape="RoundRectangle 12">
+                <Border.Triggers>
+                    <DataTrigger TargetType="Border" Binding="{Binding IsAvailable}" Value="True">
+                        <Setter Property="Background" Value="{StaticResource AvailBgOn}"/>
+                        <Setter Property="Stroke"     Value="{StaticResource AvailStrokeOn}"/>
+                    </DataTrigger>
+                    <DataTrigger TargetType="Border" Binding="{Binding IsAvailable}" Value="False">
+                        <Setter Property="Background" Value="{StaticResource AvailBgOff}"/>
+                        <Setter Property="Stroke"     Value="{StaticResource AvailStrokeOff}"/>
+                    </DataTrigger>
+                </Border.Triggers>
+                <Label Text="{Binding Availability}" FontSize="12" VerticalOptions="Center">
+                    <Label.Triggers>
+                        <DataTrigger TargetType="Label" Binding="{Binding IsAvailable}" Value="True">
+                            <Setter Property="TextColor" Value="{StaticResource AvailStrokeOn}"/>
+                        </DataTrigger>
+                        <DataTrigger TargetType="Label" Binding="{Binding IsAvailable}" Value="False">
+                            <Setter Property="TextColor" Value="{StaticResource AvailStrokeOff}"/>
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+            </Border>
+
+            <!-- logo chico -->
+            <Image Grid.Column="2" Source="logonf.png" HeightRequest="22" Aspect="AspectFit"
+                   HorizontalOptions="End" VerticalOptions="Center"/>
+        </Grid>
+
+        <!-- Subheader: botones estado -->
+        <Grid Grid.Row="1" ColumnDefinitions="*,Auto" ColumnSpacing="12">
+            <Label Text="{Binding Availability, StringFormat='Estado: {0}'}"
+                   Style="{StaticResource Muted}" VerticalOptions="Center"/>
+            <HorizontalStackLayout Grid.Column="1" Spacing="8">
+                <Button Text="Disponible" Style="{StaticResource StateBtn}" Clicked="OnAvailableClicked"/>
+                <Button Text="Ocupado"    Style="{StaticResource StateBtn}" Clicked="OnBusyClicked"/>
+            </HorizontalStackLayout>
+        </Grid>
+
+        <!-- Lista + Pull to refresh -->
+        <RefreshView Grid.Row="2" Refreshing="OnRefresh">
+            <CollectionView ItemsSource="{Binding Offers}" SelectionMode="None">
+                <CollectionView.EmptyView>
+                    <Frame Style="{StaticResource Card}" Padding="20" Margin="24" HorizontalOptions="Center" VerticalOptions="Center">
+                        <VerticalStackLayout Spacing="6" HorizontalOptions="Center" VerticalOptions="Center">
+                            <Label Text="Sin ofertas por ahora" FontSize="16" FontAttributes="Bold"
+               HorizontalTextAlignment="Center" TextColor="{StaticResource ClrTextPrimary}"/>
+                            <Label Text="Permanece Disponible para recibir viajes"
+               HorizontalTextAlignment="Center" Style="{StaticResource Muted}"/>
+                        </VerticalStackLayout>
+                    </Frame>
+                </CollectionView.EmptyView>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame Style="{StaticResource Card}" Margin="0,0,0,12">
+                            <Grid RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="*,Auto" ColumnSpacing="10" RowSpacing="6">
+                                <!-- Origen + badge “Directa” (por si llegara mezclada, igual la lista muestra ola) -->
+                                <Label Grid.Row="0" Grid.Column="0" FontSize="16"
+                 Text="{Binding origin_label}" TextColor="{StaticResource ClrTextPrimary}"/>
+                                <Border Grid.Row="0" Grid.Column="1" Padding="6,2" Stroke="#424242" StrokeThickness="1"
+                  Background="#252525" StrokeShape="RoundRectangle 10"
+                  IsVisible="{Binding is_direct, Converter={StaticResource IntNotZeroToBool}}">
+                                    <Label Text="Directa" FontSize="11" TextColor="White"/>
+                                </Border>
+
+                                <Label Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding dest_label}" Style="{StaticResource Muted}"/>
+
+                                <HorizontalStackLayout Grid.Row="2" Grid.ColumnSpan="2" Spacing="10">
+                                    <Label Text="{Binding distance_m, StringFormat='Dist: {0} m'}" Style="{StaticResource Muted}"/>
+                                    <Label Text="{Binding eta_seconds, StringFormat='ETA: {0} s'}" Style="{StaticResource Muted}"/>
+                                    <Label Text="{Binding quoted_amount, StringFormat='${0}'}" Style="{StaticResource Muted}"/>
+                                </HorizontalStackLayout>
+                            </Grid>
+
+                            <!-- Tap: abre hoja de detalle -->
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer CommandParameter="{Binding .}"
+                                Tapped="OnOfferTapped"/>
+                            </Frame.GestureRecognizers>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </RefreshView>
+    </Grid>
+</ContentPage>

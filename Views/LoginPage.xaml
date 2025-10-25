@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="OrbanaDrive.Views.LoginPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Shell.NavBarIsVisible="False"
+    Title="">
+
+    <!-- Layout base: logo arriba, sheet abajo, pie diminuto -->
+    <Grid RowDefinitions="*,Auto,Auto" Padding="0" RowSpacing="0">
+
+        <!-- LOGO / encabezado fuera de la hoja -->
+        <VerticalStackLayout Grid.Row="0" Padding="24,28,24,8" Spacing="6">
+            <Image Source="logo.png" HeightRequest="96" Aspect="AspectFit" HorizontalOptions="Center" />
+            <Label Text="Conductor" FontSize="12" HorizontalOptions="Center"
+             TextColor="{StaticResource ClrTextSecondary}" />
+        </VerticalStackLayout>
+
+        <!-- HOJA / BOTTOM SHEET (solo redondeo arriba) -->
+        <Border x:Name="Sheet"
+        Grid.Row="1"
+        MinimumHeightRequest="350"        
+        VerticalOptions="End"
+        Margin="0,0,0,8"
+        Background="{StaticResource BrushSurface}"
+        Stroke="{StaticResource BrushBorder}"
+        StrokeThickness="1"
+        Padding="{OnPlatform iOS='20,18,20,24', Android='20,18,20,14'}"
+        Shadow="{StaticResource CardShadow}">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="24,24,0,0"/>
+            </Border.StrokeShape>
+
+            <VerticalStackLayout Spacing="12">
+                <!-- "drag handle" -->
+                <BoxView Style="{StaticResource SheetHandle}" />
+
+                <!-- Campos -->
+                <Entry Placeholder="Email"
+               Keyboard="Email"
+               Text="{Binding Email}"
+               BackgroundColor="{StaticResource ClrSurfaceAlt}" />
+
+                <Entry Placeholder="Contraseña"
+               IsPassword="True"
+               Text="{Binding Password}"
+               BackgroundColor="{StaticResource ClrSurfaceAlt}" />
+
+                <!-- Recordarme -->
+                <Grid ColumnDefinitions="Auto,*" VerticalOptions="Center">
+                    <CheckBox IsChecked="{Binding RememberMe}" />
+                    <Label Grid.Column="1" Text="Recordarme" VerticalTextAlignment="Center"
+                 TextColor="{StaticResource ClrTextSecondary}" />
+                </Grid>
+
+                <!-- CTA -->
+                <Button Text="Entrar"
+                Command="{Binding DoLoginCommand}"
+                BackgroundColor="{StaticResource ClrAccent}"
+                TextColor="Black"
+                CornerRadius="14"
+                Padding="14,12" />
+            </VerticalStackLayout>
+        </Border>
+
+        <!-- Pie diminuto (versión/compilación) -->
+        <Label x:Name="LblBuild"
+           Grid.Row="2"
+           Margin="0,6,0,10"
+           FontSize="10"
+           Opacity="0.35"
+           HorizontalTextAlignment="Center"
+           TextColor="{StaticResource ClrTextSecondary}" />
+    </Grid>
+</ContentPage>

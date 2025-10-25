@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="OrbanaDrive.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:views="clr-namespace:OrbanaDrive.Views"
+    Shell.FlyoutBehavior="Disabled"
+    Shell.NavBarIsVisible="True"
+    Shell.BackgroundColor="{StaticResource ClrBackground}"
+    Shell.ForegroundColor="{StaticResource ClrTextPrimary}"
+    Shell.TitleColor="{StaticResource ClrTextPrimary}"
+    Shell.TabBarBackgroundColor="{StaticResource ClrBackground}"
+    Shell.TabBarForegroundColor="{StaticResource ClrTextSecondary}"
+    Shell.TabBarTitleColor="{StaticResource ClrTextPrimary}"
+    Shell.TabBarUnselectedColor="{StaticResource ClrTextSecondary}"
+    Title="OrbanaDrive">
+
+    <ShellContent Route="home" Title="Inicio"
+                  ContentTemplate="{DataTemplate views:HomePage}" />
+    <ShellContent Route="login" Title="Login"
+                  ContentTemplate="{DataTemplate views:LoginPage}" />
+
+    <!-- Rutas registradas (sin mostrar en barra) -->
+    <ShellContent Route="offers"   ContentTemplate="{DataTemplate views:OffersPage}"   />
+    <ShellContent Route="ride"     ContentTemplate="{DataTemplate views:RidePage}"     />
+    <ShellContent Route="stands"   ContentTemplate="{DataTemplate views:StandsPage}"   />
+    <ShellContent Route="settings" ContentTemplate="{DataTemplate views:SettingsPage}" />
+
+
+</Shell>

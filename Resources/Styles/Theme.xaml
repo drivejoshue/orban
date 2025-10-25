@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<?xaml-comp compile="true" ?>
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <Shadow x:Key="CardShadow"
+        Brush="#000000"
+        Opacity="0.35"
+        Radius="14"
+        Offset="0,6" />
+    
+    <!-- Palette -->
+    <Color x:Key="ClrBackground">#0B0F14</Color>
+    <Color x:Key="ClrSurface">#161C24</Color>
+    <Color x:Key="ClrSurfaceAlt">#11161D</Color>
+    <Color x:Key="ClrBorder">#223040</Color>
+
+    <Color x:Key="ClrPrimary">#22CC88</Color>
+    <Color x:Key="ClrPrimaryDark">#16A34A</Color>
+    <Color x:Key="ClrAccent">#4DD9FF</Color>
+
+    <Color x:Key="ClrTextPrimary">#E6EEF5</Color>
+    <Color x:Key="ClrTextSecondary">#9FB2C6</Color>
+
+    <Color x:Key="ClrWarning">#F59E0B</Color>
+    <Color x:Key="ClrDanger">#EF4444</Color>
+    <Color x:Key="ClrSuccess">#10B981</Color>
+
+    <!-- Brushes -->
+    <SolidColorBrush x:Key="BrushBackground" Color="{StaticResource ClrBackground}" />
+    <SolidColorBrush x:Key="BrushSurface" Color="{StaticResource ClrSurface}" />
+    <SolidColorBrush x:Key="BrushSurfaceAlt" Color="{StaticResource ClrSurfaceAlt}" />
+    <SolidColorBrush x:Key="BrushBorder" Color="{StaticResource ClrBorder}" />
+    <SolidColorBrush x:Key="BrushPrimary" Color="{StaticResource ClrPrimary}" />
+    <SolidColorBrush x:Key="BrushPrimaryDark" Color="{StaticResource ClrPrimaryDark}" />
+    <SolidColorBrush x:Key="BrushAccent" Color="{StaticResource ClrAccent}" />
+    <SolidColorBrush x:Key="BrushTextPrimary" Color="{StaticResource ClrTextPrimary}" />
+    <SolidColorBrush x:Key="BrushTextSecondary" Color="{StaticResource ClrTextSecondary}" />
+  
+
+    <Style x:Key="SheetHandle" TargetType="BoxView">
+        <Setter Property="HeightRequest" Value="5" />
+        <Setter Property="WidthRequest"  Value="48" />
+        <Setter Property="CornerRadius"  Value="3" />
+        <Setter Property="HorizontalOptions" Value="Center" />
+        <Setter Property="Margin" Value="0,6,0,12" />
+        <Setter Property="Color" Value="#3A4B5C" />
+    </Style>
+
+    <!-- Global -->
+    <Style TargetType="Page">
+        <Setter Property="Background" Value="{StaticResource BrushBackground}" />
+        <Setter Property="Padding" Value="0" />
+    </Style>
+
+    <Style TargetType="Label">
+        <Setter Property="TextColor" Value="{StaticResource ClrTextPrimary}" />
+    </Style>
+
+    <Style TargetType="Button">
+        <Setter Property="CornerRadius" Value="14" />
+        <Setter Property="BackgroundColor" Value="{StaticResource ClrPrimary}" />
+        <Setter Property="TextColor" Value="Black" />
+        <Setter Property="Padding" Value="14,12" />
+    </Style>
+
+    <Style x:Key="BtnSecondary" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="{StaticResource ClrSurface}" />
+        <Setter Property="TextColor" Value="{StaticResource ClrTextPrimary}" />
+        <Setter Property="BorderColor" Value="{StaticResource ClrBorder}" />
+        <Setter Property="BorderWidth" Value="1" />
+    </Style>
+
+    <Style TargetType="Entry">
+        <Setter Property="TextColor" Value="{StaticResource ClrTextPrimary}" />
+        <Setter Property="BackgroundColor" Value="{StaticResource ClrSurfaceAlt}" />
+    </Style>
+
+    <!-- Badge -->
+    <Style x:Key="Badge" TargetType="Border">
+        <Setter Property="Background" Value="{StaticResource BrushSurfaceAlt}" />
+        <Setter Property="Stroke" Value="{StaticResource BrushBorder}" />
+        <Setter Property="StrokeThickness" Value="1" />
+        <Setter Property="Padding" Value="8,4" />
+        <Setter Property="StrokeShape">
+            <Setter.Value>
+                <RoundRectangle CornerRadius="12" />
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="SheetCard" TargetType="Border">
+        <Setter Property="Background" Value="{StaticResource BrushSurface}" />
+        <Setter Property="Stroke" Value="{StaticResource BrushBorder}" />
+        <Setter Property="StrokeThickness" Value="1" />
+        <Setter Property="Padding" Value="18" />
+        <Setter Property="StrokeShape">
+            <Setter.Value>
+                <RoundRectangle CornerRadius="24"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Shadow" Value="{StaticResource CardShadow}" />
+    </Style>
+
+
+</ResourceDictionary>

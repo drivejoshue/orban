@@ -1,0 +1,6 @@
+drawable\car_pin;drawable\car_pin
+drawable\dest_pin;drawable\dest_pin
+drawable\dropoff_pin;drawable\dropoff_pin
+drawable\passenger_pin;drawable\passenger_pin
+drawable\pickup_pin;drawable\pickup_pin
+values\colors;values\colors
